@@ -5,7 +5,7 @@ export default class Pokemon extends React.Component {
 
     constructor(props) {
         super(props)
-        this.fetchPokemon()
+        this.fetchName()
         this.state = {
             name: ""
         }
@@ -14,21 +14,19 @@ export default class Pokemon extends React.Component {
     render() {
         return (
             <View style={styles.card}>
-                <View style={styles.cardHeader}>
-                    <Text>{this.state.name}</Text>
-                </View>
                 <View style={styles.cardBody}>
                     <Text style={styles.text}>#{this.props.id}</Text>
                     <Image
                         source={{ uri: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + this.props.id + ".png" }}
                         style={styles.image}
                         />
+                    <Text style={styles.name}>{this.state.name}</Text>
                 </View>
             </View>
         )
     }
 
-    fetchPokemon() {
+    fetchName() {
         const url = "https://pokeapi.co/api/v2/pokemon/" + this.props.id + "/"
         fetch(url)
             .then((response) => response.json())
@@ -53,16 +51,17 @@ const styles = StyleSheet.create({
         borderStyle: 'solid',
         borderBottomWidth: 1
     },
-    cardHeader: {
-        alignItems: 'center'
-    },
     cardBody: {
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
     },
     image: {
+        margin: 10,
         width: 100,
         height: 100
+    },
+    name: {
+        fontWeight: 'bold'
     }
 })
