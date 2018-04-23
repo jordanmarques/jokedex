@@ -1,19 +1,10 @@
 import React from 'react';
 import {StyleSheet, Text, Image, View} from 'react-native';
-import PokemonService from './PokemonService'
 
-export default class Pokemon extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.pokemonService = new PokemonService();
-        this.state = {
-            pokemon: this.pokemonService.byId(this.props.id),
-        };
-    }
+export default class Pokemon extends React.PureComponent {
 
     render() {
-        if (!this.state.pokemon) {
+        if (!this.props.pokemon) {
             return (
                 <View>
                     <Text>Loading..</Text>
@@ -23,13 +14,13 @@ export default class Pokemon extends React.Component {
             return (
                 <View style={styles.card}>
                     <View style={styles.cardBody}>
-                        <Text style={styles.text}>#{this.state.pokemon.number}</Text>
+                        <Text style={styles.text}>#{this.props.pokemon.number}</Text>
 
                         <Image
-                            source={{uri: this.state.pokemon.ThumbnailImage}}
+                            source={{uri: this.props.pokemon.ThumbnailImage}}
                             style={styles.image}
                         />
-                        <Text style={styles.name}>{this.state.pokemon.name}</Text>
+                        <Text style={styles.name}>{this.props.pokemon.name}</Text>
                     </View>
                 </View>
             )
