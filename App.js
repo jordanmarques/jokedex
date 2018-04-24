@@ -1,7 +1,9 @@
 import React from 'react';
-import {YellowBox} from 'react-native';
+import {Image, StyleSheet, View, YellowBox} from 'react-native';
 import {StackNavigator} from 'react-navigation';
-import Pokemons from "./pages/pokemons/Pokemons";
+import PokemonsPage from "./pages/pokemons/PokemonsPage";
+import PokemonDetailPage from "./pages/detail/PokemonDetailPage";
+import Text from "react-native-elements/src/text/Text";
 
 //should be removed after react fix
 YellowBox.ignoreWarnings([
@@ -9,14 +11,59 @@ YellowBox.ignoreWarnings([
     'Warning: componentWillReceiveProps is deprecated',
 ]);
 
+const backgroundColor = '#f72a2a'
+
+const styles = StyleSheet.create({
+    alignVertically: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        height: 40
+    },
+    header: {
+        backgroundColor: backgroundColor,
+    },
+    title: {
+        margin: 10,
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: 20
+    },
+    pokeball: {
+        marginLeft:20,
+        height: 30,
+        width: 30
+    }
+});
 
 export default StackNavigator(
     {
         Home: {
-            screen: Pokemons,
+            screen: PokemonsPage,
+        },
+        Detail: {
+            screen: PokemonDetailPage,
         },
     },
     {
         initialRouteName: 'Home',
+        navigationOptions: {
+            headerTitle: (
+                <View style={styles.header}>
+                    <View style={styles.alignVertically}>
+                        <Image style={styles.pokeball} source={require('./assets/images/pokeball.png')}/>
+                        <Text style={styles.title}>Jokedex</Text>
+                    </View>
+                </View>
+
+            ),
+            headerStyle: {
+                backgroundColor: backgroundColor
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+        }
+
     }
 );

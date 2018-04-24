@@ -7,6 +7,15 @@ export default class PokemonService {
         this.pokemonList = _.orderBy(_.uniqBy(pokemons, 'id'), 'id')
     }
 
+    byId(id) {
+        for (var i in this.pokemonList) {
+            if (this.pokemonList[i].id == id) {
+                return this.pokemonList[i];
+            }
+        }
+        return null;
+    }
+
     search(keyword) {
         var result = [];
         for (var i in this.pokemonList) {
