@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, Image, View} from 'react-native';
 
-export default class Pokemon extends React.PureComponent {
+export default class ListItem extends React.PureComponent {
 
     render() {
         if (!this.props.pokemon) {
@@ -12,7 +12,7 @@ export default class Pokemon extends React.PureComponent {
             )
         } else {
             return (
-                <View style={styles.card}>
+                <View>
                     <View style={styles.cardBody}>
                         <Text style={styles.text}>#{this.props.pokemon.number}</Text>
 
@@ -32,11 +32,6 @@ const styles = StyleSheet.create({
     text: {
         padding: 10,
         fontSize: 18
-    },
-    card: {
-        margin: 10,
-        borderStyle: 'solid',
-        borderBottomWidth: 1
     },
     cardBody: {
         flex: 1,

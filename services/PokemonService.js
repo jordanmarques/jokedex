@@ -1,4 +1,4 @@
-import pokemons from '../../assets/data/pokemons.json';
+import pokemons from '../assets/data/pokemons.json';
 import _ from 'lodash'
 
 export default class PokemonService {

@@ -1,8 +1,8 @@
 import React from 'react';
 import {Image, StyleSheet, View, YellowBox} from 'react-native';
 import {StackNavigator} from 'react-navigation';
-import PokemonsPage from "./pages/pokemons/PokemonsPage";
-import PokemonDetailPage from "./pages/detail/PokemonDetailPage";
+import ListPage from "./pages/list/ListPage";
+import DetailPage from "./pages/detail/DetailPage";
 import Text from "react-native-elements/src/text/Text";
 
 //should be removed after react fix
@@ -38,10 +38,10 @@ const styles = StyleSheet.create({
 export default StackNavigator(
     {
         Home: {
-            screen: PokemonsPage,
+            screen: ListPage,
         },
         Detail: {
-            screen: PokemonDetailPage,
+            screen: DetailPage,
         },
     },
     {

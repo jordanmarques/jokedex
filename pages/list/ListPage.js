@@ -1,13 +1,13 @@
 import React from 'react';
 import {FlatList, StyleSheet, TextInput, TouchableHighlight, View} from 'react-native';
 import {Icon} from 'react-native-elements'
-import Pokemon from './Pokemon.js';
-import PokemonService from "./PokemonService";
+import PokemonService from "../../services/PokemonService";
+import PokemonRow from "./PokemonRow";
 
-export default class PokemonsPage extends React.Component {
+export default class ListPage extends React.Component {
 
     static get NUMBER_OF_POKEMONS_IN_DEFAULT_LIST() {
-        return 9
+        return 200
     }
 
     constructor(props) {
@@ -15,7 +15,7 @@ export default class PokemonsPage extends React.Component {
 
         this.pokemonService = new PokemonService();
         this.state = {
-            list: this.pokemonService.until(PokemonsPage.NUMBER_OF_POKEMONS_IN_DEFAULT_LIST),
+            list: this.pokemonService.until(ListPage.NUMBER_OF_POKEMONS_IN_DEFAULT_LIST),
             showButton: true
         }
     }
@@ -42,8 +42,8 @@ export default class PokemonsPage extends React.Component {
                     data={this.state.list}
                     renderItem={({item}) => {
                         return (
-                            <TouchableHighlight  onPress={() => {this.props.navigation.navigate('Detail', item)}}>
-                                <Pokemon pokemon={item}/>
+                            <TouchableHighlight  style={ styles.item } underlayColor ={'white'} onPress={() => {this.props.navigation.navigate('Detail', item)}}>
+                                <PokemonRow  pokemon={item}/>
                             </TouchableHighlight>
                         )
                     }}
@@ -55,7 +55,7 @@ export default class PokemonsPage extends React.Component {
 
     search(keyword) {
         if (!keyword || keyword.length < 2) {
-            const result = this.pokemonService.until(PokemonsPage.NUMBER_OF_POKEMONS_IN_DEFAULT_LIST)
+            const result = this.pokemonService.until(ListPage.NUMBER_OF_POKEMONS_IN_DEFAULT_LIST)
             this.setState({list: result})
         } else {
             const result = this.pokemonService.search(keyword)
@@ -82,5 +82,10 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingBottom: 5,
         paddingLeft: 5
+    },
+    item: {
+        margin: 10,
+        borderStyle: 'solid',
+        borderBottomWidth: 1
     }
 });
