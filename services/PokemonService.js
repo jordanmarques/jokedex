@@ -3,6 +3,16 @@ import _ from 'lodash'
 
 export default class PokemonService {
 
+    static instance = null;
+
+    static getInstance() {
+        if (PokemonService.instance == null) {
+            PokemonService.instance = new PokemonService();
+        }
+
+        return PokemonService.instance;
+    }
+
     constructor() {
         this.pokemonList = _.orderBy(_.uniqBy(pokemons, 'id'), 'id')
     }

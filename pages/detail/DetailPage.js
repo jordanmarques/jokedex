@@ -1,5 +1,5 @@
 import React from "react";
-import {View, Text, StyleSheet, Image} from 'react-native';
+import PokemonDetail from "./PokemonDetail";
 
 export default class DetailPage extends React.Component {
 
@@ -13,129 +13,53 @@ export default class DetailPage extends React.Component {
 
     constructor(props) {
         super(props);
+        const offlinePokemon = this.props.navigation.state.params;
         this.state = {
-            pokemon: this.props.navigation.state.params
+            pokemon: offlinePokemon
         };
+        this.enrichPokemon(this.state.pokemon.id)
     }
 
     render() {
         return (
-            <View>
-                <View style={styles.head}>
-                    <Image
-                        source={{uri: this.state.pokemon.ThumbnailImage}}
-                        style={styles.image}
-                    />
-                </View>
-                <View style={styles.body}>
-                    <View style={styles.element} elevation={7}>
-                        <View style={styles.elementHead}>
-                            <Text style={{fontWeight:'bold'}}>Types</Text>
-                        </View>
-                        <View style={styles.elementBody}>
-                            {this.renderTypes(this.state.pokemon.type)}
-                        </View>
-                    </View>
-                    <View style={styles.element} elevation={7}>
-                        <View style={styles.elementHead}>
-                            <Text style={{fontWeight:'bold'}}>Weakness</Text>
-                        </View>
-                        <View style={styles.elementBody}>
-                            {this.renderTypes(this.state.pokemon.weakness)}
-                        </View>
-                    </View>
-                </View>
-            </View>
+            <PokemonDetail pokemon={this.state.pokemon}/>
         )
     }
 
-    renderTypes(types){
-        var result = [];
-        for (i in types) {
-            const type = types[i].toLowerCase()
-            result.push(
-                <Text style={StyleSheet.flatten([styles.badge, {backgroundColor: this.getColorForType(type)}])}
-                      key={i}>{type}</Text>
-            )
-        }
-        return result
+    enrichPokemon(id) {
+        this.fetchAdditionalInformations(id);
+        this.fetchEvolutionChain(id)
     }
 
-    getColorForType(type) {
-        const typesColor = {
-            normal: "#b3966e",
-            fighting: "#ff6462",
-            flying: "#828cc9",
-            poison: "#b464a3",
-            ground: "#e7b465",
-            rock: "#aaa063",
-            bug: "#95ab3c",
-            ghost: "#836e95",
-            steel: "#8cb4be",
-            fire: "#fc7851",
-            water: "#4fc8db",
-            grass: "#76c85b",
-            electric: "#fbc622",
-            psychic: "#fd658c",
-            ice: "#6edcd3",
-            dragon: "#5b63ac",
-            dark: "#5a504f",
-            fairy: "#fe78aa"
+    fetchAdditionalInformations(id) {
+        fetch("https://pokeapi.co/api/v2/pokemon/" + id + "/")
+            .then((response) => response.json())
+            .then((responseJson) => {
+                this.setState(prevState => ({
+                    pokemon: {
+                        ...prevState.pokemon,
+                        web: responseJson
+                    }
+                }))
+            })
+    }
 
-        };
-        return typesColor[type]
+    fetchEvolutionChain(id) {
+        fetch("https://pokeapi.co/api/v2/pokemon-species/" + id + "/")
+            .then((response) => response.json())
+            .then((responseJson) => {
+                fetch(responseJson.evolution_chain.url)
+                    .then((response) => response.json())
+                    .then((responseJson) => {
+                        this.setState(prevState => ({
+                            pokemon: {
+                                ...prevState.pokemon,
+                                evolutionChain: responseJson
+                            }
+                        }))
+                    })
+            })
     }
 }
 
-const styles = StyleSheet.create({
-    head: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    body: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    image: {
-        flex: 1,
-        width: 200,
-        height: 200
-    },
-    element: {
-        flex: 1,
-        margin: 3,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        borderColor: 'red',
-        borderStyle: 'solid',
-        backgroundColor: '#f0f0f5'
-    },
-    elementHead: {
-        flexDirection: 'column',
-        alignItems: 'center',
-        flexGrow: 1,
-        flexShrink: 0,
-    },
-    elementBody: {
-        flexWrap:'wrap',
-        flexDirection: 'row',
-        alignItems: 'center',
-        flexGrow: 1,
-        flexShrink: 0,
-    },
-    types: {
-        flexWrap:'wrap',
-        flexDirection: 'row',
-        alignItems: 'center',
-        flex: 1
-    },
-    badge: {
-        padding: 5,
-        margin: 5,
-        backgroundColor: 'green',
-        color: 'white',
-        fontWeight: 'bold',
-        borderRadius: 2
-    }
-});
+

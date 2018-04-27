@@ -7,13 +7,13 @@ import PokemonRow from "./PokemonRow";
 export default class ListPage extends React.Component {
 
     static get NUMBER_OF_POKEMONS_IN_DEFAULT_LIST() {
-        return 200
+        return 151
     }
 
     constructor(props) {
         super(props);
 
-        this.pokemonService = new PokemonService();
+        this.pokemonService = PokemonService.getInstance();
         this.state = {
             list: this.pokemonService.until(ListPage.NUMBER_OF_POKEMONS_IN_DEFAULT_LIST),
             showButton: true
