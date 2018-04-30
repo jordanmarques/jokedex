@@ -2,7 +2,7 @@ import React from "react";
 import {StyleSheet, View} from "react-native";
 import Text from "react-native-elements/src/text/Text";
 
-export default class Element extends React.PureComponent {
+export default class Elements extends React.PureComponent {
 
     render(){
         return(

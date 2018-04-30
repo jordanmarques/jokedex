@@ -1,14 +1,16 @@
 import React from "react";
 import {StyleSheet, Image, View} from 'react-native';
-import Element from "./Element";
+import Elements from "./Elements";
 import Evolution from "./Evolution";
+import Stats from "./Stats";
 
 export default class PokemonDetail extends React.Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
-            pokemon: props.pokemon
+            pokemon: props.pokemon,
+            enrichingPokemon: true
         };
         this.enrichPokemon(this.state.pokemon.id)
     }
@@ -25,12 +27,16 @@ export default class PokemonDetail extends React.Component {
                 </View>
 
                 <View style={styles.row}>
-                    <Element types={this.state.pokemon.type} title={'Types'}/>
-                    <Element types={this.state.pokemon.weakness} title={'Weakness'}/>
+                    <Elements types={this.state.pokemon.type} title={'Types'}/>
+                    <Elements types={this.state.pokemon.weakness} title={'Weakness'}/>
                 </View>
 
                 <View style={styles.row}>
-                    <Evolution pokemon={this.state.pokemon}/>
+                    <Stats stats={this.state.pokemon.stats}/>
+                </View>
+
+                <View style={styles.row}>
+                    <Evolution pokemonId={this.state.pokemon.id}/>
                 </View>
 
             </View>
@@ -48,7 +54,7 @@ export default class PokemonDetail extends React.Component {
                 this.setState(prevState => ({
                     pokemon: {
                         ...prevState.pokemon,
-                        web: responseJson
+                        stats: responseJson.stats
                     }
                 }))
             })

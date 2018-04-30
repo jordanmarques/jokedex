@@ -6,13 +6,13 @@ import Text from "react-native-elements/src/text/Text";
 export default class Evolution extends React.Component {
 
     constructor(props) {
-        super(props)
+        super(props);
 
         this.state = {
-            pokemon: props.pokemon
+            id: props.pokemonId
         };
 
-        this.fetchEvolutionChain(this.state.pokemon.id)
+        this.fetchEvolutionChain(this.state.id)
     }
 
     render() {
@@ -27,8 +27,8 @@ export default class Evolution extends React.Component {
     }
 
     renderEvolutions() {
-        if (this.state.pokemon.evolutionChain) {
-            const evolutions = this.buildEvolutions([], {evolves_to: [this.state.pokemon.evolutionChain.chain]});
+        if (this.state.evolutionChain) {
+            const evolutions = this.buildEvolutions([], {evolves_to: [this.state.evolutionChain.chain]});
             if (evolutions.length > 1) {
                 return evolutions
             }
@@ -76,12 +76,7 @@ export default class Evolution extends React.Component {
                 fetch(responseJson.evolution_chain.url)
                     .then((response) => response.json())
                     .then((responseJson) => {
-                        this.setState(prevState => ({
-                            pokemon: {
-                                ...prevState.pokemon,
-                                evolutionChain: responseJson
-                            }
-                        }))
+                        this.setState({evolutionChain: responseJson})
                     })
             })
     }
